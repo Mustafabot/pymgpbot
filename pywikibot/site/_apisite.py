@@ -1608,9 +1608,12 @@ class APISite(
             load_all = False
 
         if not types or load_all is not False:
-            pdata = self._paraminfo.parameter('query+tokens', 'type')
-            assert pdata is not None
-            types = pdata['type']
+            if self.logged_in():
+                pdata = self._paraminfo.parameter('query+tokens', 'type')
+                assert pdata is not None
+                types = pdata['type']
+            else:
+                types = ['login']
 
         req = self.simple_request(action='query', meta='tokens',
                                   type=types, formatversion=2)
